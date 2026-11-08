@@ -1,0 +1,143 @@
+Verification performed in the assistant environment. Run locally and capture your own screenshots.
+
+$ python client/client.py list
+Status Code: 200
+[
+  {
+    "id": 1,
+    "title": "The Great Gatsby",
+    "author": {
+      "name": "F. Scott Fitzgerald",
+      "email": "fscott@example.com"
+    },
+    "year": 1925,
+    "genre": "Fiction",
+    "ratings": []
+  },
+  {
+    "id": 2,
+    "title": "1984",
+    "author": {
+      "name": "George Orwell",
+      "email": null
+    },
+    "year": 1949,
+    "genre": "Dystopian",
+    "ratings": []
+  }
+]
+
+$ python client/client.py get 1
+Status Code: 200
+{
+  "id": 1,
+  "title": "The Great Gatsby",
+  "author": {
+    "name": "F. Scott Fitzgerald",
+    "email": "fscott@example.com"
+  },
+  "year": 1925,
+  "genre": "Fiction",
+  "ratings": []
+}
+
+$ python client/client.py create Pride and Prejudice Jane Austen jane@example.com 1813 Romance --ratings 4,5,3
+Status Code: 201
+{
+  "id": 3,
+  "title": "Pride and Prejudice",
+  "author": {
+    "name": "Jane Austen",
+    "email": "jane@example.com"
+  },
+  "year": 1813,
+  "genre": "Romance",
+  "ratings": [
+    4,
+    5,
+    3
+  ]
+}
+
+$ python client/client.py update 3 Pride and Prejudice Jane Austen jane@example.com 1813 Classic --ratings 5,5
+Status Code: 200
+{
+  "id": 3,
+  "title": "Pride and Prejudice",
+  "author": {
+    "name": "Jane Austen",
+    "email": "jane@example.com"
+  },
+  "year": 1813,
+  "genre": "Classic",
+  "ratings": [
+    5,
+    5
+  ]
+}
+
+$ python client/client.py search-genre fiction
+Status Code: 200
+[
+  {
+    "id": 1,
+    "title": "The Great Gatsby",
+    "author": {
+      "name": "F. Scott Fitzgerald",
+      "email": "fscott@example.com"
+    },
+    "year": 1925,
+    "genre": "Fiction",
+    "ratings": []
+  }
+]
+
+$ python client/client.py patch 3 --title Updated --ratings 5,4,5
+Status Code: 200
+{
+  "id": 3,
+  "title": "Updated",
+  "author": {
+    "name": "Jane Austen",
+    "email": "jane@example.com"
+  },
+  "year": 1813,
+  "genre": "Classic",
+  "ratings": [
+    5,
+    4,
+    5
+  ]
+}
+
+$ python client/client.py count
+Status Code: 200
+{
+  "count": 3
+}
+
+$ python client/client.py delete 3
+Status Code: 200
+{
+  "message": "Book deleted"
+}
+
+$ python client/client.py count
+Status Code: 200
+{
+  "count": 2
+}
+
+$ python client/client.py get 999
+Status Code: 404
+{
+  "detail": "Book not found"
+}
+
+$ python client/client.py --password wrong list
+Status Code: 401
+{
+  "detail": "Invalid credentials"
+}
+
+Additional API checks passed: duplicate ID 400, mismatched ID 400, invalid payload 422, partial update preserves other fields, case-insensitive search, and final count 2.
